@@ -7,9 +7,17 @@ export async function get(request) {
   const code = request.query.get('code')
   const token = await getToken(code)
   const user = await getUser(token)
+  request.locals.user = user.login
+  
   return {
-    body: JSON.stringify(user, null, 2)
+    status: 302,
+    headers: {
+      location: '/'
+    }
   }
+  //return {
+    //body: JSON.stringify(user, null, 2)
+  //}
 }
 
 function getUser(token) {
